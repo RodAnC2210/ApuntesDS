@@ -1,0 +1,83 @@
+---
+title: "PSDS chapter 1"
+output: html_document
+---
+```{r}
+library(tidyverse)
+library(matrixStats)
+```
+
+
+```{r}
+str(statePSDS)
+```
+```{r}
+mean(state[["Population"]])
+```
+```{r}
+mean(state[["Population"]], trim = 0.1)
+```
+```{r}
+median(state[["Population"]])
+```
+```{r}
+weighted.mean(statePSDS[["Murder.Rate"]], w = statePSDS [["Population"]])
+weightedMedian(statePSDS[["Murder.Rate"]], w = statePSDS[["Population"]])
+```
+```{r}
+str(state)
+```
+```{r}
+sd(statePSDS[["Population"]])
+IQR(statePSDS[["Population"]])
+mad(statePSDS[["Population"]])
+```
+```{r}
+?boxplot
+```
+
+```{r}
+quantile(statePSDS[["Murder.Rate"]], p = c(.05, .25, .5, .75, .95))
+```
+```{r}
+boxplot(statePSDS[["Population"]]/1000000, ylab = "Population (millions)")
+```
+```{r}
+?histogram
+?seq
+?cut
+```
+
+```{r}
+PSDS_PATH <- file.path('~', 'statistics-for-data-scientists')
+```
+```{r}
+breaks <- seq(from = min(statePSDS[["Population"]]),
+              to = max(statePSDS[["Population"]]), length = 11)
+pop_freq <- cut(statePSDS[["Population"]], breaks = breaks,
+                right = TRUE, include.lowest = TRUE)
+table(pop_freq)
+```
+```{r}
+hist(statePSDS[["Population"]], breaks = breaks)
+```
+```{r}
+hist(statePSDS[["Murder.Rate"]], freq = FALSE)
+lines(density(statePSDS[["Murder.Rate"]]), lwd=3, col="blue")
+```
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

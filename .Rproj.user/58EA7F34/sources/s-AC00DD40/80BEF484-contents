@@ -1,0 +1,168 @@
+---
+title: "Apuntes_DS"
+output: html_document
+---
+
+
+```{r}
+install.packages("devtools")
+
+install.packages("dplyr")
+
+install.packages("rmarkdown")
+
+install.packages("ggplot2")
+
+install.packages("broom")
+
+install.packages("gridExtra")
+
+install.packages("shiny")
+
+install.packages("tidyr")
+
+install.packages("cubature")
+
+install_github("StatsWithR/statsr")
+```
+
+```{r}
+library(devtools)
+install_local("~/OneDrive/3. DATA SCIENCE/2_Biostatistics in R/Biostat/statsr-master")
+```
+```{r}
+?sample
+?grep
+```
+
+The easiest way to get a R Markdown (Rmd) Document and console cooperating about this is to place the file with the data in it in the same folder as the R Markdown (Rmd) Document, __Set Working Directory - To Source File Location__. 
+
+`load("selected_nzes2011.Rdata")`
+
+We next need to diagnose where the problem lies -- in the R code or in the data? The best way to troubleshoot this issue is to run each line of the `dplyr` chain one by one.
+
+`grep("FRAGMENT", variable, value = TRUE)`
+
+names()#variables names, grep()#fragment-pattern matches in variables
+
+An easy way of tabulating these data to see how many times each level of is to use the `group_by()` function along with the `summarise()` command:
+
+grep("singlefav", names(selected_nzes2011), value = TRUE)
+
+selected_nzes2011 %>%
+  select(jpartyvote, jdiffvoting, X_singlefav) %>%
+  str()
+  
+selected_nzes2011 %>%  
+  group_by(jpartyvote) %>%
+  summarise(count = n())
+
+selected_nzes2011 %>% 
+  filter(jpartyvote != "Don't know") %>% 
+  group_by(jpartyvote) %>% 
+  summarise(count = n())
+  
+##Note that adding the filter also got rid of the `NA` entries.
+
+`NA` entries need special targeting because they do not actually exist (they are different to the text `"NA"` or a variable saved with the name `NA`). 
+
+If we only wanted to find the `NA`s we would use the `is.na()` function with the name of the variable inside the parentheses. 
+
+However since we want the entries that are **not** `NA`s we can use the __Not__ operator, `!`, to indicate "we want all the ones that are not NA":`!is.na()`. Hence we can `filter` out all non NAs in our `dplyr` chain:
+
+```{r count_known_favourites}
+selected_nzes2011 %>% 
+  filter(!is.na(X_singlefav)) %>% 
+  group_by(X_singlefav) %>% 
+  summarise(count = n())
+```
+
+And remember that we can `filter` for multiple characteristics at once:
+
+```{r filter_on_multiple_vars}
+selected_nzes2011 %>% 
+  filter(!is.na(X_singlefav), jpartyvote != "Don't know") %>% 
+  group_by(X_singlefav) %>%  
+  summarise(count=n())
+```
+
+```{r}
+?n
+?'%in%'
+```
+
+If we wanted to select only two of the possible levels in how much people like NZ First, we can filter for these specific levels. When interested in filtering for multiple values a variable can take, the `%in%` operator can come in handy:
+
+```{r pick_from_list}
+selected_nzes2011 %>% 
+  filter(jnzflike %in% c("0","10")) %>%
+  group_by(jnzflike) %>%  
+  summarise(count = n())
+```
+
+
+NORMAL DISTRIBUTION
+
+```{r}
+pnorm(35, mean = 55, sd = 10)
+```
+```{r}
+?pnorm #calculate percentiles. mean
+```
+pnorm(x = observation, mean, sd)
+ result = area under de curve to the left
+```{r}
+pnorm(-1, mean = 0, sd = 1)
+```
+```{r}
+rnorm(10, mean = 0, sd = 1)
+```
+```{r}
+dnorm(1, mean = 0, sd = 1)
+```
+```{r}
+qnorm(0.97, mean = 0, sd = 1) #zscore of a p value qnorm(p value, mean, sd)
+```
+```{r}
+pnorm(26, mean = 21, sd = 5)
+```
+```{r}
+qnorm(0.90, mean = 1500, sd = 300)
+```
+```{r}
+qnorm(0.5, mean = 21, sd = 5)
+```
+```{r}
+pnorm(14.59224, mean = 21, sd = 5)
+```
+```{r}
+qnorm(0.9, mean = 0, sd = 1)
+```
+
+```{r}
+qnorm(0.10, mean = 21, sd = 5)
+```
+
+BINOMIAL DISTRIBUTION
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

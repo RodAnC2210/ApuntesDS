@@ -1,0 +1,69 @@
+---
+title: "apuntes_rprogramming"
+output: html_document
+---
+```{r}
+library(tidyverse)
+```
+```{r}
+example <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8), nrow = 4, ncol = 2)
+```
+
+View(example)
+
+"Installing from CRAN"
+If you are installing from the CRAN repository, use the install.packages() function, with the name of the package you want to install in quotes between the parentheses (note: you can use either single or double quotes). For example, if you want to install the package “ggplot2”, you would use: install.packages("ggplot2")
+
+"Installing from Bioconductor"
+The BioConductor repository uses their own method to install packages. First, to get the basic functions required to install through BioConductor, use: source("https://bioconductor.org/biocLite.R")
+
+This makes the main install function of BioConductor, biocLite(), available to you. Following this, you call the package you want to install in quotes, between the parentheses of the biocLite command, like so: biocLite("GenomicFeatures")
+
+"Installing from Bioconductor"
+The BioConductor repository uses their own method to install packages. First, to get the basic functions required to install through BioConductor, use: source("https://bioconductor.org/biocLite.R")
+
+This makes the main install function of BioConductor, biocLite(), available to you. Following this, you call the package you want to install in quotes, between the parentheses of the biocLite command, like so: biocLite("GenomicFeatures")
+
+```{r}
+install.packages("devtools")
+library(devtools)
+```
+
+"detach("package:ggplot2", unload=TRUE)"
+```{r}
+installed.packages()
+old.packages()
+update.packages()
+```
+remove.packages("ggplot2")
+
+```{r}
+help(package = "ggplot2")
+```
+
+```{r}
+browseVignettes("ggplot2")
+```
+
+```{r}
+install.packages("KernSmooth")
+library(KernSmooth)
+```
+```{r}
+sessionInfo()
+```
+```{r}
+getwd()
+```
+
+
+
+
+
+
+
+
+
+
+
+

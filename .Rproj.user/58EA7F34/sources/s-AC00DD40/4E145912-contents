@@ -1,0 +1,209 @@
+---
+title: "Course2_linearregression"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+```
+```{r}
+getwd()
+COPD <- read_csv("COPD_dataset.csv")
+```
+```{r}
+spec(COPD)
+```
+```{r}
+str(COPD)
+```
+```{r}
+hist(COPD$MWT1Best)
+```
+```{r}
+hist(COPD$MWT1, main = "Histogram of MWT1Best", xlab = "MWT1Best", breaks = 30, axes = T)
+```
+```{r}
+ggplot() + geom_histogram(data = COPD, aes(x = MWT1Best), bins = 20, fill = "dark blue", color = "red") +
+  labs(x = "MTW1Best", y = "Frequency") +
+  theme_dark() 
+```
+
+```{r}
+# There are no obvious impossible values, but there is quite a high value which is above 650. For this specific value, you can look at it using the subset() function. The basic code for this is
+##subset(dataframe, variable > x), so here: 
+subset(COPD, MWT1Best > 650)
+```
+```{r}
+#subset(COPD, MWT1Best > 600 | MWT1Best < 150) where ‘|’ stands for ‘and’.  
+subset(COPD, MWT1Best > 650 | MWT1Best < 150)
+```
+```{r}
+hist(COPD$FEV1, main = "Histogram FEV1", xlab = "FEV1", breaks = 15)
+```
+```{r}
+ggplot() + geom_histogram(data = COPD, aes(x = FEV1), bins = 20, fill =  "dark green", color = "red") +
+  labs(x = "FEV1", y = "Frequency") + theme_light()
+```
+```{r}
+summary(COPD$FEV1)
+```
+```{r}
+?summarise
+```
+
+```{r}
+list("Summary" = summary(COPD$FEV1), "mean" = mean(COPD$FEV1), "Standar deviation" = sd(COPD$FEV1), "Range" = range(COPD$FEV1), "Inter-Quantil Range" = IQR(COPD$FEV1))
+```
+```{r}
+list("Summary" = summary(COPD$MWT1Best), "Mean" = mean(COPD$MWT1Best, na.rm=TRUE), "Standard Deviation" = sd(COPD$MWT1Best, na.rm=TRUE), "Range" = range(COPD$MWT1Best, na.rm=TRUE), "Inter-Quartile Range" = IQR(COPD$MWT1Best, na.rm=TRUE)) 
+```
+```{r}
+list("Summary" = summary(COPD$MWT1Best), "Mean" = mean(COPD$MWT1Best), "Standard Deviation" = sd(COPD$MWT1Best), "Range" = range(COPD$MWT1Best), "Inter-Quartile Range" = IQR(COPD$MWT1Best)) 
+```
+
+```{r}
+summary(COPD$MWT1Best)
+```
+```{r}
+#plot(x, y)
+plot(COPD$FEV1, COPD$MWT1Best, xlab = "FEV1", ylab = "MWT1Best")
+```
+```{r}
+#complete.obs removes NA (missing values)?????
+?cor.test
+cor.test(COPD$FEV1, COPD$MWT1Best, use = "complete.obs", method = "pearson")
+```
+```{r}
+cor.test(COPD$FEV1, COPD$MWT1Best, use = "complete.obs", method = "spearman")
+```
+```{r}
+hist(COPD$AGE, main = "Histogram of age", xlab = "Age", breaks = 20)
+```
+```{r}
+summary(COPD$AGE)
+?list
+list("Summary" = summary(COPD$AGE), "Range" = range(COPD$AGE), "IQR" = IQR(COPD$AGE))
+```
+```{r}
+summary(COPD$MWT1Best)
+```
+```{r}
+?summary
+```
+
+```{r}
+plot(COPD$AGE, COPD$MWT1Best, xlab = "AGE", ylab = " MWT1Best")
+```
+```{r}
+cor.test(COPD$AGE, COPD$MWT1Best, use = "complete.obs", method = "pearson")
+```
+```{r}
+cor.test(COPD$AGE, COPD$MWT1Best, use = "complete.obs", method = "spearman")
+```
+
+#To run a linear regression in R, the function you need to use is lm(). The basic format of this function is: 
+
+##lm(outcome ~ predictor, data = dataframe)
+
+#In order to manipulate and investigate this model, you need to store it as an R object, i.e., assign it to a vector. You can do this using the operator sign (<-), as you learned previously. The format for this is:  
+
+##new vector name <- linear regression model
+
+```{r}
+MWT1Best_FEV1 <- lm(MWT1Best ~ FEV1, data = COPD)
+summary(MWT1Best_FEV1)
+```
+```{r}
+#Show confidence interval 95%
+confint(MWT1Best_FEV1)
+```
+
+```{r}
+?par
+plot(MWT1Best_FEV1)
+```
+```{r}
+?lm
+```
+
+#MWT1Best and AGE
+```{r}
+summary(COPD$MWT1Best)
+summary(COPD$AGE)
+```
+```{r}
+plot(COPD$AGE, COPD$MWT1Best, xlab = "AGE", ylab = "MWT1Best")
+```
+```{r}
+cor.test(COPD$AGE, COPD$MWT1Best, method = "pearson")
+cor.test(COPD$AGE, COPD$MWT1Best, method = "spearman")
+```
+```{r}
+AGE_MWT1best <- lm(formula = MWT1Best ~ AGE, data = COPD)
+summary(AGE_MWT1best)
+```
+```{r}
+plot(AGE_MWT1best)
+```
+```{r}
+confint(AGE_MWT1best)
+```
+```{r}
+predictedVals <- predict(AGE_MWT1best)
+residualVals <- residuals(AGE_MWT1best)
+par(mfrow = c(2,2))
+```
+```{r}
+summary(predictedVals)
+summary(residualVals)
+```
+```{r}
+hist(residualVals)
+```
+
+
+MULTIPLE LINEAR REGRESSION
+
+```{r}
+# Model name <- lm(outcome ~ predictor1 + predictor2, data = dataframe) 
+```
+```{r}
+MWT1B_FEV1_AGE <- lm(MWT1Best ~ FEV1 + AGE, data = COPD)
+summary(MWT1B_FEV1_AGE)
+confint(MWT1B_FEV1_AGE)
+```
+```{r}
+#FVC and AGE multiple regression
+##First FVC model
+summary(COPD$FVC)
+plot(COPD$FVC, COPD$MWT1Best)
+cor.test(COPD$FVC, COPD$MWT1Best, method = "pearson")
+MWT1B_FVC <- lm(formula = MWT1Best ~ FVC, data = COPD)
+summary(MWT1B_FVC)
+plot(MWT1B_FVC)
+```
+```{r}
+MWT1B_FVC_AGE <- lm(formula = MWT1Best ~ FVC + AGE, data = COPD)
+summary(MWT1B_FVC_AGE)
+plot(MWT1B_FVC_AGE)
+```
+
+
+```{r}
+?rbinom()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

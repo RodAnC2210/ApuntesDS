@@ -1,0 +1,135 @@
+---
+title: "Course1_Week3_ICL"
+output: html_document
+---
+
+```{r}
+#importing data set "cancer data"
+getwd()
+cancer_data_for_MOOC_1 <- read_csv("~/OneDrive/3. DATA SCIENCE/2_Biostatistics in R/cancer data for MOOC 1.csv")
+```
+```{r}
+g <- read.csv(file = "~/OneDrive/3. DATA SCIENCE/2_Biostatistics in R/cancer data for MOOC 1.csv", header = TRUE, sep = ',')
+view(g)
+```
+```{r}
+?head #Return the First or Last Parts of an Object
+```
+
+```{r}
+head(g)
+```
+```{r}
+g[4,]
+```
+```{r}
+g[,5]
+```
+```{r}
+g[2,3]
+```
+```{r}
+g[1:5,]
+```
+```{r}
+age <- g[, 'age']
+```
+
+```{r}
+fruit <- g[, 'fruit']
+veg <- g[, 'veg']
+fruitveg <- fruit + veg
+table(fruitveg)
+```
+
+```{r}
+g <- mutate(g, fruitveg)
+```
+
+```{r}
+g$age
+```
+```{r}
+summary(age)
+hist(age)
+```
+```{r}
+g$smoking
+table(g$smoking, exclude = NULL)
+```
+```{r}
+summary(fruitveg)
+```
+```{r}
+?`$`
+```
+```{r}
+summary(g$fruitveg)
+```
+```{r}
+#dichotomise patients 5 or more portions a day
+?ifelse
+g$five_a_day <- ifelse(g$fruitveg >= 5, 1, 0)
+table(g$five_a_day)
+```
+```{r}
+g$five_a_day2 <- ifelse(g$fruitveg >= 5, yes = TRUE, no = FALSE)
+table(g$five_a_day2)
+```
+```{r}
+hist(g$fruitveg)
+```
+```{r}
+hist(g$fruitveg, xlab = "Portions of fruit and vegetables",
+     main = "Daily consumption of fruit and vegetables")
+```
+```{r}
+hist(g$fruitveg, xlab = "Portions of fruit and vegetables",
+     main = "Daily consumption of fruit and vegetables", axes = F) #turn of axes
+axis(side = 1, at = seq(0, 11, 1)) #1=xaxis, 0to11, interval of 1
+axis(side = 2, at = seq(0, 16, 2)) #2=yaxis, 0to16, interval of 2
+```
+```{r}
+library(tidyverse)
+```
+```{r}
+require(ggplot2)
+```
+```{r}
+ggplot() + geom_histogram(data = g, aes(x = fruitveg))
+```
+```{r}
+ggplot() +
+  geom_histogram(data = g, aes(x = fruitveg), bins = 10)
+```
+```{r}
+ggplot() +
+  geom_histogram(data = g, aes(x = fruitveg), bins = 10, fill = "darkred", col= "black")
+```
+```{r}
+ggplot() + geom_histogram(data = g, aes(x = fruitveg), bins = 10, fill = "darkred", col = "black") +
+  labs(x = "Portions of fruit and vegetables", y = "Frequency")
+```
+```{r}
+ggplot() + geom_histogram(data = g, aes(x = fruitveg), bins = 10, fill = "darkred", col = "black") +
+  labs(x = "Portions of fruit and vegetables", y = "Frequency") +
+  scale_x_continuous(breaks = seq(from = 0, to = 12, by =1))
+```
+```{r}
+ggplot() + geom_histogram(data = g, aes(x = fruitveg), bins = 10, fill = "darkred", col = "black") +
+  labs(x = "Portions of fruit and vegetables", y = "Frequency") +
+  scale_x_continuous(breaks = seq(from = 0, to = 12, by =1)) + theme_dark()
+```
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+

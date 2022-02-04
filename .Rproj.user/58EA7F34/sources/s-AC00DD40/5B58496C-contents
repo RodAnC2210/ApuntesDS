@@ -1,0 +1,29 @@
+---
+title: "PSDS_ch2" ""Sampling and distribution""
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+rpois(100, lambda = 2)
+```
+```{r}
+rexp(100, rate = 0.2)
+```
+```{r}
+rweibull(100, 1.5, 5000)
+```
+
+
+
+
+
+
+
+
+
+
+
